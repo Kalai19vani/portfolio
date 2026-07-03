@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalaivani S · Data Analyst</title>
+<meta name="description" content="Kalaivani S — Data Analyst skilled in SQL, Power BI, Python and Excel. Portfolio of dashboards, data cleaning and reporting projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#05060c;
+    --navy:#0a0e1c;
+    --panel:#0d1224;
+    --panel-hi:#131a33;
+    --border:rgba(255,255,255,0.09);
+    --border-strong:rgba(255,255,255,0.16);
+    --text:#f2f4fa;
+    --muted:#96a0b8;
+    --faint:#5a6280;
+    --cyan:#22d3ee;
+    --cyan-dim:rgba(34,211,238,0.10);
+    --purple:#a78bfa;
+    --purple-dim:rgba(167,139,250,0.10);
+    --radius-lg:16px;
+    --radius-md:12px;
+    --radius-sm:8px;
+    --maxw:1180px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    font-size:15.5px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.01em;}
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  img{max-width:100%;display:block;}
+  :focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:4px;}
+
+  /* ---------- BACKDROP (subtle, static) ---------- */
+  .backdrop{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(600px 400px at 12% -5%, rgba(34,211,238,0.07), transparent 60%),
+      radial-gradient(560px 420px at 92% 10%, rgba(167,139,250,0.06), transparent 60%),
+      linear-gradient(180deg, var(--void) 0%, var(--navy) 100%);
+  }
+  .backdrop::before{
+    content:"";position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(ellipse 80% 55% at 50% 0%, black 40%, transparent 85%);
+  }
+
+  .container{max-width:var(--maxw);margin:0 auto;padding:0 6vw;position:relative;z-index:1;}
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    background:rgba(5,6,12,0.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{
+    max-width:var(--maxw);margin:0 auto;padding:0 6vw;height:64px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  nav.navlinks{display:flex;gap:38px;width:100%;max-width:640px;justify-content:center;}
+  nav.navlinks a{
+    font-size:13.5px;color:var(--muted);font-weight:500;
+    position:relative;padding:4px 0;transition:color .2s;
+  }
+  nav.navlinks a::after{
+    content:"";position:absolute;left:0;bottom:-2px;width:0;height:1.5px;
+    background:var(--cyan);transition:width .25s ease;
+  }
+  nav.navlinks a:hover{color:var(--text);}
+  nav.navlinks a:hover::after{width:100%;}
+  .nav-cta{
+    font-size:13px;font-weight:600;padding:9px 18px;border-radius:var(--radius-sm);
+    border:1px solid var(--border-strong);color:var(--text);transition:.2s;
+  }
+  .nav-cta:hover{border-color:var(--cyan);color:var(--cyan);}
+  .nav-toggle{display:none;}
+
+  /* ---------- BUTTONS ---------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;
+    padding:12px 22px;border-radius:var(--radius-sm);
+    font-size:14px;font-weight:600;
+    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+    border:1px solid transparent;
+    cursor:pointer;
+  }
+  .btn svg{width:16px;height:16px;flex-shrink:0;}
+  .btn-primary{
+    background:linear-gradient(120deg, var(--cyan), var(--purple));
+    color:#04050a;
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px -10px rgba(34,211,238,0.35);}
+  .btn-outline{
+    background:transparent;border-color:var(--border-strong);color:var(--text);
+  }
+  .btn-outline:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px);}
+  .btn-ghost{
+    background:var(--panel);border-color:var(--border);color:var(--text);
+  }
+  .btn-ghost:hover{border-color:var(--border-strong);background:var(--panel-hi);transform:translateY(-2px);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh;display:flex;align-items:center;
+    padding:120px 0 80px;position:relative;
+  }
+  .hero-chart{
+    position:absolute;top:18%;right:2%;width:min(42vw,480px);opacity:0.55;
+    z-index:0;pointer-events:none;
+  }
+  .hero-inner{max-width:660px;position:relative;z-index:1;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);
+    letter-spacing:2.5px;text-transform:uppercase;margin-bottom:22px;
+    display:inline-flex;align-items:center;gap:9px;
+  }
+  .eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);}
+  .hero h1{
+    font-size:clamp(38px,5.6vw,58px);font-weight:700;line-height:1.08;
+    margin-bottom:16px;color:var(--text);
+  }
+  .hero .subtitle{
+    font-family:'JetBrains Mono',monospace;font-size:14.5px;color:var(--muted);
+    letter-spacing:0.02em;margin-bottom:24px;
+  }
+  .hero .subtitle b{color:var(--cyan);font-weight:500;}
+  .hero p.intro{
+    color:var(--muted);font-size:16px;line-height:1.75;max-width:540px;margin-bottom:38px;
+  }
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:100px 0;position:relative;z-index:1;}
+  .sec-head{margin-bottom:48px;max-width:600px;}
+  .sec-tag{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--purple);
+    letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;display:block;
+  }
+  .sec-head h2{font-size:clamp(24px,3.4vw,32px);font-weight:600;}
+  .sec-head p{color:var(--muted);margin-top:12px;font-size:15px;line-height:1.7;}
+
+  /* ---------- STATS ---------- */
+  .stats-strip{
+    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+    padding:44px 0;
+  }
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .stat{text-align:center;}
+  .stat b{
+    display:block;font-family:'JetBrains Mono',monospace;font-weight:500;
+    font-size:clamp(24px,3vw,32px);color:var(--text);margin-bottom:6px;
+  }
+  .stat span{color:var(--faint);font-size:12.5px;letter-spacing:0.03em;text-transform:uppercase;}
+
+  /* ---------- ABOUT ---------- */
+  .about-card{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg);
+    padding:38px;max-width:760px;
+  }
+  .about-card p{color:var(--muted);line-height:1.85;font-size:15.5px;}
+  .about-card strong{color:var(--text);font-weight:600;}
+
+  /* ---------- SKILLS ---------- */
+  .skill-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;}
+  .skill-card{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg);
+    padding:24px;transition:border-color .2s ease, transform .2s ease;
+  }
+  .skill-card:hover{border-color:var(--border-strong);transform:translateY(-3px);}
+  .skill-card .ic{
+    width:36px;height:36px;border-radius:var(--radius-sm);
+    background:var(--cyan-dim);color:var(--cyan);
+    display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+  }
+  .skill-card .ic svg{width:18px;height:18px;}
+  .skill-card h3{font-size:14.5px;font-weight:600;margin-bottom:14px;color:var(--text);}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-size:12.5px;padding:6px 12px;border-radius:var(--radius-sm);
+    background:var(--navy);border:1px solid var(--border);color:var(--muted);
+  }
+
+  /* ---------- PROJECTS ---------- */
+  .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;}
+  .proj-card{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg);
+    overflow:hidden;transition:border-color .2s ease, transform .2s ease;
+    display:flex;flex-direction:column;
+  }
+  .proj-card:hover{border-color:var(--border-strong);transform:translateY(-4px);}
+  .proj-preview{
+    height:140px;position:relative;background:var(--navy);
+    border-bottom:1px solid var(--border);overflow:hidden;
+  }
+  .proj-preview svg{width:100%;height:100%;}
+  .proj-body{padding:24px;display:flex;flex-direction:column;gap:14px;flex:1;}
+  .proj-body h3{font-size:16.5px;font-weight:600;}
+  .proj-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--faint);letter-spacing:1.5px;text-transform:uppercase;}
+  .proj-body p.problem{color:var(--muted);font-size:14px;line-height:1.65;}
+  .proj-body p.insight{color:var(--muted);font-size:13.5px;line-height:1.6;padding-left:12px;border-left:2px solid var(--cyan);}
+  .proj-links{display:flex;gap:10px;margin-top:auto;padding-top:6px;}
+  .proj-links a{
+    font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px;
+    color:var(--text);border:1px solid var(--border-strong);padding:8px 14px;border-radius:var(--radius-sm);
+    transition:.2s;
+  }
+  .proj-links a:hover{border-color:var(--cyan);color:var(--cyan);}
+  .proj-links a svg{width:13px;height:13px;}
+
+  /* ---------- EXPERIENCE ---------- */
+  .timeline{display:flex;flex-direction:column;gap:20px;}
+  .tl-card{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg);
+    padding:30px 32px;
+  }
+  .tl-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
+  .tl-top h3{font-size:17.5px;font-weight:600;}
+  .tl-top .date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);}
+  .tl-loc{color:var(--faint);font-size:13px;margin-bottom:20px;}
+  .tl-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .tl-cols h4{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);
+    letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;
+  }
+  .tl-cols ul{display:flex;flex-direction:column;gap:8px;}
+  .tl-cols li{color:var(--muted);font-size:14px;line-height:1.6;padding-left:14px;position:relative;}
+  .tl-cols li::before{content:"";position:absolute;left:0;top:9px;width:5px;height:5px;border-radius:50%;background:var(--border-strong);}
+
+  /* ---------- EDUCATION ---------- */
+  .edu-card{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg);
+    padding:34px;max-width:560px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
+  }
+  .edu-card h3{font-size:18px;font-weight:600;margin-bottom:6px;}
+  .edu-card .school{color:var(--muted);font-size:14px;}
+  .edu-score{text-align:right;}
+  .edu-score b{font-family:'JetBrains Mono',monospace;font-size:30px;color:var(--cyan);display:block;}
+  .edu-score span{color:var(--faint);font-size:11.5px;letter-spacing:1px;text-transform:uppercase;}
+
+  /* ---------- CONTACT ---------- */
+  .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
+  .contact-tile{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg);
+    padding:22px;display:flex;align-items:center;gap:14px;transition:.2s;
+  }
+  .contact-tile:hover{border-color:var(--border-strong);transform:translateY(-3px);}
+  .contact-tile .ic{
+    width:38px;height:38px;border-radius:var(--radius-sm);flex-shrink:0;
+    background:var(--purple-dim);color:var(--purple);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .contact-tile .ic svg{width:18px;height:18px;}
+  .contact-tile .meta span{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+  .contact-tile .meta b{font-size:14px;font-weight:600;color:var(--text);}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--border);padding:36px 0;position:relative;z-index:1;
+  }
+  .footer-inner{
+    max-width:var(--maxw);margin:0 auto;padding:0 6vw;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;
+  }
+  .footer-inner .fbrand{font-family:'Space Grotesk';font-weight:600;font-size:14px;}
+  .footer-inner .flinks{display:flex;gap:22px;}
+  .footer-inner .flinks a{color:var(--muted);font-size:13px;transition:.2s;}
+  .footer-inner .flinks a:hover{color:var(--cyan);}
+  .footer-inner .fnote{color:var(--faint);font-size:12.5px;}
+
+  /* ---------- REVEAL ---------- */
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease, transform .5s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  ::selection{background:var(--cyan);color:#03040c;}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    .stats-grid{grid-template-columns:repeat(2,1fr);gap:28px 20px;}
+    .proj-grid{grid-template-columns:1fr;}
+    .tl-cols{grid-template-columns:1fr;gap:16px;}
+    .hero-chart{display:none;}
+  }
+  @media (max-width:760px){
+    .nav-inner{padding:0 3vw;height:auto;min-height:56px;}
+    nav.navlinks{gap:16px;flex-wrap:wrap;padding:10px 0;max-width:none;justify-content:center;}
+    nav.navlinks a{font-size:12px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<div class="backdrop"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <nav class="navlinks" aria-label="Section navigation">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" id="top">
+    <div class="container">
+      <svg class="hero-chart" viewBox="0 0 480 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="lineGrad" x1="0" y1="0" x2="480" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#22d3ee"/>
+            <stop offset="1" stop-color="#a78bfa"/>
+          </linearGradient>
+        </defs>
+        <g stroke="rgba(255,255,255,0.06)" stroke-width="1">
+          <line x1="0" y1="40" x2="480" y2="40"/>
+          <line x1="0" y1="100" x2="480" y2="100"/>
+          <line x1="0" y1="160" x2="480" y2="160"/>
+          <line x1="0" y1="220" x2="480" y2="220"/>
+          <line x1="0" y1="280" x2="480" y2="280"/>
+        </g>
+        <g fill="url(#lineGrad)" opacity="0.35">
+          <rect x="20" y="200" width="26" height="80" rx="3"/>
+          <rect x="66" y="150" width="26" height="130" rx="3"/>
+          <rect x="112" y="180" width="26" height="100" rx="3"/>
+          <rect x="158" y="120" width="26" height="160" rx="3"/>
+          <rect x="204" y="90" width="26" height="190" rx="3"/>
+        </g>
+        <polyline points="20,220 66,180 112,190 158,120 204,95 250,130 296,70 342,100 388,50 434,75"
+          fill="none" stroke="url(#lineGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <g fill="#22d3ee">
+          <circle cx="204" cy="95" r="4"/>
+          <circle cx="388" cy="50" r="4"/>
+        </g>
+      </svg>
+
+      <div class="hero-inner">
+        <span class="eyebrow">Data Analyst · Open to Work</span>
+        <h1>Kalaivani S</h1>
+        <p class="subtitle">Data Analyst&nbsp;<b>|</b>&nbsp;SQL&nbsp;<b>|</b>&nbsp;Power BI&nbsp;<b>|</b>&nbsp;Python&nbsp;<b>|</b>&nbsp;Excel</p>
+        <p class="intro">I turn messy, disconnected data into dashboards and reports that help teams spot trends faster, catch risk earlier, and make decisions with confidence — using SQL, Power BI and Python across the full analytics workflow.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#projects">
+            View Projects
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/Kalai19vani" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.4 9.4 0 0 1 2.5-.35c.85 0 1.7.12 2.5.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .28.18.61.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>
+            GitHub
+          </a>
+          <a class="btn btn-ghost" href="https://www.linkedin.com/in/kalaivani-s-276689388" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V21h3.38V8.5ZM5.25 3a1.96 1.96 0 1 0 0 3.92 1.96 1.96 0 0 0 0-3.92ZM21 21v-6.87c0-3.28-1.75-4.81-4.08-4.81-1.88 0-2.72 1.03-3.19 1.76V8.5H10.4c.04.9 0 12.5 0 12.5h3.33v-6.98c0-.37.03-.75.14-1.02.3-.75 1-1.53 2.16-1.53 1.53 0 2.14 1.16 2.14 2.87V21H21Z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-strip reveal">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat"><b>5+</b><span>Data Projects</span></div>
+        <div class="stat"><b>2</b><span>Internships</span></div>
+        <div class="stat"><b>8.6</b><span>CGPA</span></div>
+        <div class="stat"><b>8.6K+</b><span>Records Analyzed</span></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="about">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-tag">About</span>
+        <h2>Background</h2>
+      </div>
+      <div class="about-card reveal">
+        <p>I'm a <strong>B.Tech Information Technology</strong> graduate with hands-on experience turning raw datasets into decisions. Across two data analytics internships, I've cleaned and queried large datasets in <strong>SQL</strong>, built interactive <strong>Power BI</strong> dashboards, and used <strong>Python</strong> to automate reporting and surface trends teams could act on. I'm comfortable working end-to-end — from data cleaning and exploratory analysis to dashboard design and stakeholder-ready reporting — and I care about accuracy as much as presentation. I'm currently seeking an <strong>entry-level Data Analyst role</strong> where I can apply these skills to solve real business problems and grow within a data-driven team.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-tag">Skills</span>
+        <h2>Technical toolkit</h2>
+        <p>Tools and concepts I use to clean, model, analyze and present data.</p>
+      </div>
+      <div class="skill-groups">
+        <div class="skill-card reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 18-6-6 6-6M16 6l6 6-6 6"/></svg></div>
+          <h3>Programming</h3>
+          <div class="chip-row"><span class="chip">Python</span><span class="chip">SQL</span></div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 15l4-6 3 3 5-8"/></svg></div>
+          <h3>BI &amp; Analytics</h3>
+          <div class="chip-row"><span class="chip">Power BI</span><span class="chip">Excel</span><span class="chip">DAX</span></div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 12 4l9 4.5-9 4.5-9-4.5ZM3 8.5v7L12 20l9-4.5v-7M12 13v7"/></svg></div>
+          <h3>Libraries</h3>
+          <div class="chip-row"><span class="chip">Pandas</span><span class="chip">NumPy</span><span class="chip">Matplotlib</span></div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></div>
+          <h3>Database</h3>
+          <div class="chip-row"><span class="chip">MySQL</span></div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="0.5" fill="currentColor"/></svg></div>
+          <h3>Concepts</h3>
+          <div class="chip-row"><span class="chip">Data Cleaning</span><span class="chip">EDA</span><span class="chip">Dashboarding</span><span class="chip">Data Visualization</span><span class="chip">Reporting</span><span class="chip">Business Insights</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-tag">Projects</span>
+        <h2>Selected work</h2>
+        <p>Each project below solves a specific business problem end-to-end, from raw data to a decision-ready view.</p>
+      </div>
+      <div class="proj-grid">
+
+        <div class="proj-card reveal">
+          <div class="proj-preview">
+            <svg viewBox="0 0 400 140" preserveAspectRatio="none"><polyline points="0,110 40,90 80,100 120,60 160,75 200,40 240,55 280,25 320,45 360,20 400,35" fill="none" stroke="#22d3ee" stroke-width="2"/><polyline points="0,110 40,90 80,100 120,60 160,75 200,40 240,55 280,25 320,45 360,20 400,35 400,140 0,140" fill="rgba(34,211,238,0.08)" stroke="none"/></svg>
+          </div>
+          <div class="proj-body">
+            <span class="proj-label">Credit Risk Analysis</span>
+            <h3>Credit Risk Analysis System</h3>
+            <p class="problem">Manual credit checks made it slow and inconsistent to flag high-risk applicants.</p>
+            <div class="chip-row"><span class="chip">Python</span><span class="chip">SQL</span><span class="chip">Pandas</span><span class="chip">Power BI</span></div>
+            <p class="insight">Segmented applicants by repayment history and income band, surfacing the top risk indicators for faster review.</p>
+            <div class="proj-links">
+              <a href="https://github.com/Kalai19vani" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.4 9.4 0 0 1 2.5-.35c.85 0 1.7.12 2.5.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .28.18.61.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>
+                Code
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-card reveal">
+          <div class="proj-preview">
+            <svg viewBox="0 0 400 140" preserveAspectRatio="none"><rect x="20" y="60" width="30" height="60" fill="rgba(167,139,250,0.35)"/><rect x="70" y="30" width="30" height="90" fill="rgba(167,139,250,0.35)"/><rect x="120" y="70" width="30" height="50" fill="rgba(34,211,238,0.35)"/><rect x="170" y="15" width="30" height="105" fill="rgba(34,211,238,0.5)"/><rect x="220" y="45" width="30" height="75" fill="rgba(167,139,250,0.35)"/><rect x="270" y="55" width="30" height="65" fill="rgba(34,211,238,0.35)"/><rect x="320" y="25" width="30" height="95" fill="rgba(167,139,250,0.5)"/></svg>
+          </div>
+          <div class="proj-body">
+            <span class="proj-label">AI Data Assistant</span>
+            <h3>NobiChan — Offline AI Data Analyst</h3>
+            <p class="problem">Non-technical users needed answers from spreadsheets without writing queries.</p>
+            <div class="chip-row"><span class="chip">Python</span><span class="chip">Flask</span><span class="chip">Pandas</span><span class="chip">Ollama</span></div>
+            <p class="insight">Automated EDA plus natural-language Q&amp;A cut the time to a first insight from a new dataset dramatically.</p>
+            <div class="proj-links">
+              <a href="https://github.com/Kalai19vani" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.4 9.4 0 0 1 2.5-.35c.85 0 1.7.12 2.5.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .28.18.61.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>
+                Code
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-card reveal">
+          <div class="proj-preview">
+            <svg viewBox="0 0 400 140" preserveAspectRatio="none"><circle cx="200" cy="70" r="46" fill="none" stroke="#22d3ee" stroke-width="14" stroke-dasharray="90 200"/><circle cx="200" cy="70" r="46" fill="none" stroke="#a78bfa" stroke-width="14" stroke-dasharray="60 200" stroke-dashoffset="-90"/><circle cx="200" cy="70" r="46" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="14" stroke-dasharray="50 200" stroke-dashoffset="-150"/></svg>
+          </div>
+          <div class="proj-body">
+            <span class="proj-label">Restaurant Analytics</span>
+            <h3>Swiggy Restaurant Analytics Dashboard</h3>
+            <p class="problem">Vendor and delivery performance data was scattered across raw exports with no single view.</p>
+            <div class="chip-row"><span class="chip">Power BI</span><span class="chip">SQL</span><span class="chip">DAX</span></div>
+            <p class="insight">Price-segmented 8,600+ restaurants and identified the delivery-time bands most linked to low ratings.</p>
+            <div class="proj-links">
+              <a href="https://github.com/Kalai19vani" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.4 9.4 0 0 1 2.5-.35c.85 0 1.7.12 2.5.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .28.18.61.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>
+                Code
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-card reveal">
+          <div class="proj-preview">
+            <svg viewBox="0 0 400 140" preserveAspectRatio="none"><rect x="20" y="20" width="170" height="46" rx="4" fill="rgba(34,211,238,0.18)"/><rect x="20" y="76" width="110" height="46" rx="4" fill="rgba(167,139,250,0.18)"/><rect x="210" y="20" width="170" height="102" rx="4" fill="rgba(255,255,255,0.05)"/><line x1="220" y1="100" x2="370" y2="60" stroke="#22d3ee" stroke-width="2"/><line x1="220" y1="80" x2="370" y2="90" stroke="#a78bfa" stroke-width="2"/></svg>
+          </div>
+          <div class="proj-body">
+            <span class="proj-label">HR Analytics</span>
+            <h3>HR Attrition Analytics</h3>
+            <p class="problem">Leadership needed to know which departments were losing people fastest, and why.</p>
+            <div class="chip-row"><span class="chip">MySQL</span><span class="chip">Power BI</span><span class="chip">DAX</span></div>
+            <p class="insight">Isolated the departments driving the majority of attrition, narrowing management's focus for retention action.</p>
+            <div class="proj-links">
+              <a href="https://github.com/Kalai19vani" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.4 9.4 0 0 1 2.5-.35c.85 0 1.7.12 2.5.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .28.18.61.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>
+                Code
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-card reveal">
+          <div class="proj-preview">
+            <svg viewBox="0 0 400 140" preserveAspectRatio="none"><polyline points="0,120 50,100 100,110 150,70 200,85 250,50 300,65 350,30 400,45" fill="none" stroke="#a78bfa" stroke-width="2"/><g fill="#22d3ee"><circle cx="150" cy="70" r="4"/><circle cx="300" cy="65" r="4"/><circle cx="350" cy="30" r="4"/></g></svg>
+          </div>
+          <div class="proj-body">
+            <span class="proj-label">E-commerce Analytics</span>
+            <h3>Flipkart Sales Performance Dashboard</h3>
+            <p class="problem">Sales, ratings and payment-method data needed a single view to guide category decisions.</p>
+            <div class="chip-row"><span class="chip">Power BI</span></div>
+            <p class="insight">Analysed 5,000+ orders to reveal which payment methods and categories drove the highest order value.</p>
+            <div class="proj-links">
+              <a href="https://github.com/Kalai19vani" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.4 9.4 0 0 1 2.5-.35c.85 0 1.7.12 2.5.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .28.18.61.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>
+                Code
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-tag">Experience</span>
+        <h2>Where I've worked</h2>
+      </div>
+      <div class="timeline">
+        <div class="tl-card reveal">
+          <div class="tl-top"><h3>Data Analyst Intern — Zoro Tech</h3><span class="date">Jan 2026 – Feb 2026</span></div>
+          <div class="tl-loc">Nagercoil</div>
+          <div class="tl-cols">
+            <div>
+              <h4>Responsibilities</h4>
+              <ul>
+                <li>Extracted and cleaned large datasets using SQL and Excel to ensure data quality and consistency.</li>
+                <li>Designed interactive Power BI dashboards to monitor key business KPIs.</li>
+                <li>Collaborated with the team to build reusable, automated reporting templates.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Achievement</h4>
+              <ul>
+                <li>Streamlined daily reporting steps, reducing manual errors across the team's workflow.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="tl-card reveal">
+          <div class="tl-top"><h3>Data Analytics Intern — Marcello Tech</h3><span class="date">Mar 2026</span></div>
+          <div class="tl-loc">Trichy</div>
+          <div class="tl-cols">
+            <div>
+              <h4>Responsibilities</h4>
+              <ul>
+                <li>Performed daily data cleaning and quality audits using Excel and SQL to support accurate tracking.</li>
+                <li>Conducted exploratory data analysis (EDA) to identify key data trends.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Achievement</h4>
+              <ul>
+                <li>Built Power BI visual reports that directly supported management decision-making.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-tag">Education</span>
+        <h2>Academic background</h2>
+      </div>
+      <div class="edu-card reveal">
+        <div>
+          <h3>B.Tech · Information Technology</h3>
+          <div class="school">Ponjesly College of Engineering, Nagercoil</div>
+        </div>
+        <div class="edu-score"><b>8.6</b><span>CGPA</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-tag">Contact</span>
+        <h2>Let's work together</h2>
+        <p>Open to entry-level Data Analyst roles. Reach out through any of the channels below.</p>
+      </div>
+      <div class="contact-grid">
+        <a class="contact-tile reveal" href="https://www.linkedin.com/in/kalaivani-s-276689388" target="_blank" rel="noopener">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V21h3.38V8.5ZM5.25 3a1.96 1.96 0 1 0 0 3.92 1.96 1.96 0 0 0 0-3.92ZM21 21v-6.87c0-3.28-1.75-4.81-4.08-4.81-1.88 0-2.72 1.03-3.19 1.76V8.5H10.4c.04.9 0 12.5 0 12.5h3.33v-6.98c0-.37.03-.75.14-1.02.3-.75 1-1.53 2.16-1.53 1.53 0 2.14 1.16 2.14 2.87V21H21Z"/></svg></div>
+          <div class="meta"><span>LinkedIn</span><b>Kalaivani S</b></div>
+        </a>
+        <a class="contact-tile reveal" href="https://github.com/Kalai19vani" target="_blank" rel="noopener">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.4 9.4 0 0 1 2.5-.35c.85 0 1.7.12 2.5.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .28.18.61.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg></div>
+          <div class="meta"><span>GitHub</span><b>Kalai19vani</b></div>
+        </a>
+        <div class="contact-tile reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="meta"><span>Location</span><b>Chennai, India</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="fbrand">Kalaivani S</div>
+    <div class="flinks">
+      <a href="https://www.linkedin.com/in/kalaivani-s-276689388" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Kalai19vani" target="_blank" rel="noopener">GitHub</a>
+      <a href="#top">Back to top</a>
+    </div>
+    <div class="fnote">© 2026 Kalaivani S</div>
+  </div>
+</footer>
+
+<script>
+  // Reliable smooth scroll for in-page nav links
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e){
+      const id = this.getAttribute('href');
+      if(id.length > 1){
+        const target = document.querySelector(id);
+        if(target){
+          e.preventDefault();
+          target.scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      }
+    });
+  });
+
+  // Subtle scroll-reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('visible'));
+  }
+</script>
+
+</body>
+</html>
